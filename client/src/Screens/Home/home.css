@@ -1,0 +1,115 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap');
+
+
+.tagline-headng{
+    font-family: 'Nunito', sans-serif;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: .1rem;
+    margin-bottom: 2rem;
+
+}
+.tagline-para{
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: #fff;
+    letter-spacing: .1rem;
+    margin-bottom: 2rem;
+}
+
+
+.btnSilverPack {
+    background-color: #F56812;
+    border-radius: 25px;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 600;
+    margin-top: 60%;
+    width: auto;
+
+
+}
+.btnGoldPack{
+    background-color:#022140;
+    border-radius: 25px;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 600;
+    margin-top: 60%;
+    width: auto;
+
+    
+
+}
+.btnGoldPack-alt{
+    background-color: #022140;
+    border-radius: 25px;
+    color: #555;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857;
+    padding: 6px;
+    display: none;
+    
+}
+
+.img-box {
+    justify-content: center;
+}
+.img-box img{
+    width: 100%;
+    height: auto;
+}
+.msg-box{
+    width: 100%;
+}
+.mobile-icons{
+    display: none;
+}
+
+
+@media (max-width: 580px) {
+
+    .btnSilverPack{
+        margin-top: 2%;
+
+    }
+    .btnGoldPack {
+        display: none;
+    }
+    .btnGoldPack-alt{
+        margin-top: 2%;
+        display: inline-block;
+    }
+    .img-box {
+        justify-content: center;
+    }
+    .msg-box{
+        width: 100%;
+    }
+    .mobile-icons{
+        display: block;
+    }
+    .pc-icons{
+        display: none;
+    }
+    .mobile-icons > ul{
+        margin-top: 2rem;
+    }
+    .mobile-icons > ul > li> a{
+        font-size: 1.5rem;
+    }
+    .tagline-headng{
+        font-size: 2rem;
+        font-weight: 600;
+        text-align: center;
+    }
+    .tagline-para{
+        font-size: 1.2rem;
+        font-weight: 400;
+        
+    }
+}

@@ -1,0 +1,14 @@
+.reward-img{
+    height: 20rem;
+    margin-top: 10%;
+    
+}
+
+/*media query for mobile*/
+@media (max-width: 580px) {
+    .reward-img-box{
+        text-align: center;
+        align-self: center;
+    }
+    
+}

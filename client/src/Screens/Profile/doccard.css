@@ -1,0 +1,17 @@
+.docribbon{
+    max-height: 80%;
+    margin-left: -4rem;
+    margin-top: -2rem;
+}
+
+@media only screen and (max-width: 570px) {
+    .docribbon{
+        max-height: 80%;
+        max-width: 80%;
+        margin-top: -2rem;
+        margin-left: -3rem;
+    }
+    .btn-box{
+        margin-left: 0;
+    }
+}

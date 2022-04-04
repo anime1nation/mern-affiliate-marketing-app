@@ -1,0 +1,43 @@
+.card-btn-pc{
+    margin-top: 2rem;
+}
+.accept-btn, .reject-btn{
+    width: 10rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    border-radius:20px;
+    font-weight: bold;
+
+    
+    
+}
+.card-btn-mobile{
+    display: none;
+}
+.accept-btn{
+    background-color: #0AA223;
+}
+.reject-btn{
+    margin-left: 1rem;
+    background-color: red ;
+
+}
+
+
+.txt-wallet-card{
+    font-size: 1.1rem;
+    font-weight: bold;
+    
+}
+.wallet-payslip{
+    width: 25rem;
+    height: 25rem;    
+}
+@media (max-width: 580px) {
+    .card-btn-pc{
+        display: none;
+    }
+    .card-btn-mobile{
+        display: block;
+    }
+}

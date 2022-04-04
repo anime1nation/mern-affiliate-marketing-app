@@ -1,0 +1,13 @@
+.leftNav >li
+{
+    display: inline-block;
+    padding-right: 2em;
+    color: #fff;
+    cursor: pointer;
+
+}
+
+.listItem:hover
+{
+   text-decoration: none;
+}

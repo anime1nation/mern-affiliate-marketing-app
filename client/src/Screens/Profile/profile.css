@@ -1,0 +1,19 @@
+.basicDetailTable > tr, .profileCard>tr {
+    border:none;
+}
+
+
+.image-upload > input {
+    display: none;
+}
+
+
+/* media query for mobile */
+@media only screen and (max-width: 600px) {
+    .profileImage,.profileName {
+        text-align: center;
+        text-transform: capitalize;
+    }
+    
+}
+

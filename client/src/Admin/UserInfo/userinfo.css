@@ -1,0 +1,15 @@
+.user-info-table > td {
+    border:none;
+    text-align: center;
+}
+.user-info-deatils-button{
+    border-radius: 20px;
+    background-color: #00bcd4;
+    color:#fff;
+
+
+}
+.user-search-box{
+    border: 1px solid #000 !important;
+    border-radius: 20px !important;
+}

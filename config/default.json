@@ -1,0 +1,7 @@
+{
+    
+    "mongoURI" : "mongodb+srv://fxbrokerage:fxbrokerage@cluster0.w07zb.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
+    "jwtsecret":"fxbrokerage",
+    "TWILIO_ACCOUNT_SID":"AC669c9a3419037410f1347fe78cca6c99",
+    "TWILIO_AUTH_TOKEN":"b82f71d2e7db4b9acca06753cef2f077"
+}

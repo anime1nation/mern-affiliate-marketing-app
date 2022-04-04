@@ -1,0 +1,11 @@
+/* mobile media query */
+
+.zoomIcon{
+    width: 8rem;
+}
+ @media (max-width: 580px) {
+     .zoomIcon{
+         width: 8rem;
+     }
+ 
+ }
