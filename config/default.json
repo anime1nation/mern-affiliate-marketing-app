@@ -1,7 +1,8 @@
 {
     
-    "mongoURI" : "mongodb+srv://fxbrokerage:fxbrokerage@cluster0.w07zb.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
+    "mongoURI" : "mongodb+srv://kravi:2580@library.wgfaf.mongodb.net/library?retryWrites=true&w=majority",
     "jwtsecret":"fxbrokerage",
-    "TWILIO_ACCOUNT_SID":"AC669c9a3419037410f1347fe78cca6c99",
-    "TWILIO_AUTH_TOKEN":"b82f71d2e7db4b9acca06753cef2f077"
+    "TWILIO_ACCOUNT_SID":"AC6f446716efbdbfd40cc5b5a69ef16fdf",
+    "TWILIO_AUTH_TOKEN":"a28de32c2048b1bf440abb3381fc0120",
+    "TWILIO_NUMBER" : "+17579976900"
 }

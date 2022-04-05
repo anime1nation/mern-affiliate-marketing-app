@@ -6,6 +6,7 @@ const bcrypt = require('bcrypt');
 const config = require('config');
 const accountSid = config.get('TWILIO_ACCOUNT_SID');
 const authToken = config.get('TWILIO_AUTH_TOKEN');
+const twilioNumber= config.get('TWILIO_NUMBER');
 const userAuth = require('../../middleware/userAuth');
 const User = require('../../models/User');
 const Notice = require('../../models/Notice');
@@ -244,7 +245,7 @@ router.post('/send-otp',async (req, res) => {
         client.messages
   .create({
      body: `${name}, Your OTP for FX Brokerage registration is ${otp}`,
-     from: '+16264697276',
+     from: twilioNumber,
      to: '+91'+mobile
    })
   .then(message => console.log(message.sid));

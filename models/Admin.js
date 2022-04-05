@@ -7,6 +7,9 @@ const  AdminSchema = new mongoose.Schema({
     email:{
         type:String,
     },
+    username:{
+        type:String
+    },
     mobile:{
         type:String,
     },
@@ -18,6 +21,7 @@ const  AdminSchema = new mongoose.Schema({
     },
     isActive:{
         type:Boolean,
+        default:true
     },
 });
 
