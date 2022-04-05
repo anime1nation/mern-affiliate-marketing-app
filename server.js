@@ -5,6 +5,7 @@ const bodyParser = require("body-parser")
 const cors =require('cors');
 const connectDB = require('./config/db');
 const adminSeeder = require('./config/data');
+const path = require(“path”);
 
 connectDB();
 adminSeeder();
