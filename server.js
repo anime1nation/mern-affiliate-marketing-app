@@ -5,7 +5,6 @@ const bodyParser = require("body-parser")
 const cors =require('cors');
 const connectDB = require('./config/db');
 const adminSeeder = require('./config/data');
-const path = require(“path”);
 
 connectDB();
 adminSeeder();
@@ -19,7 +18,7 @@ parameterLimit:50000}));
 // Making Build Folder as Public 
 
 app.get('/',(req,res)=>res.send('API WORKING'));
-app.use(express.static(path.join(__dirname, '../client/build')));
+
 
 app.use('/api/auth',require('./routes/api/auth'));
 app.use('/api/user',require('./routes/api/user'));

@@ -105,7 +105,7 @@ router.post('/sign-up',[
 } 
 catch (err) {
     console.log(err.message);
-    res.status(500).json({errors:[{msg: err.message}]});
+    res.status(500).json({errors:[{msg: 'Server error'}]});
 }
     }
 
