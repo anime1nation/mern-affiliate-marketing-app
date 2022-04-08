@@ -13,6 +13,7 @@ import { useNavigate } from 'react-router-dom';
 import {action as toggleMenu} from 'redux-burger-menu';
 const Login = ({
     signIn,
+    user,
     setAlert,
     toggleMenu,
     isAuthenticated
@@ -45,7 +46,11 @@ const Login = ({
                try{
                 signIn({username,password});
                 
-                navigate('/home');
+                setTimeout(() => {
+                    if(isAuthenticated && user!==null){
+                        navigate('/home')
+                    }},500);
+                
                }catch(err){
                 console.log(err.message);
                 const errors = err.response.data.errors;
@@ -66,10 +71,7 @@ const Login = ({
         }, [])
         
 
-        if(isAuthenticated){
-
-            navigate('/');
-        }
+        
 
 
 
@@ -84,7 +86,7 @@ const Login = ({
     }}>
         <div className="row" >
             <div className='col-sm-12'> 
-                <Alerts />
+               
             </div>
 
             <div className="col-md-5 ml-auto pb-5">
@@ -138,7 +140,7 @@ const Login = ({
                     </div>    
                     <div className="card-body mx-auto col-sm-12">
 
-                        <form>
+                        
                 
                             <div className="input-container">
                                 <input type="text" required="" name='username' value={username} onChange={
@@ -167,7 +169,7 @@ const Login = ({
                             </div>
                             <div className='text-center mt-5'>
                             
-                            <button type="submit" className='waves-effect waves-light btn deep-orange daken-1'  style={{
+                            <button  className='waves-effect waves-light btn deep-orange daken-1'  style={{
                                 background: '#F56812 0% 0% no-repeat padding-box',
                                 borderRadius: '43px',
                                 width: '200px',
@@ -191,9 +193,9 @@ const Login = ({
                             </div>
 
                             <div className='text-center mt-5 '>
-                                
+                                <Alerts />
                             </div>
-                        </form>
+                    
                     </div>
 
                     </Fragment>   
@@ -212,6 +214,7 @@ const mapStateToProps = state => ({
 
         
         isAuthenticated: state.auth.isAuthenticated,
+        user: state.auth.user,
     
 });
 

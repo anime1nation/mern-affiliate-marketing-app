@@ -19,6 +19,7 @@ const DocumentsCard = ({
         panImg:'',
         passbookImg:'',
     });
+    const [isDocSubmitted,setIsDocSubmitted] = useState(false);
     
     const { aadharFrontImg,aadharBackImg,panImg,passbookImg } = formdata;
 
@@ -90,7 +91,7 @@ const DocumentsCard = ({
         }catch(err){
             const errors = err.response.data.errors;
         if(errors){
-            console.log(errors);
+            
             errors.forEach(error =>setAlert(error.msg,'danger'));
         }
         }
@@ -104,6 +105,7 @@ const DocumentsCard = ({
             
             
             
+            
                 if(res.data!==null){
                     if(res.data.aadharFrontImg && res.data.aadharBackImg && res.data.panImg && res.data.passbookImg){
                         setformData({
@@ -113,6 +115,9 @@ const DocumentsCard = ({
                             passbookImg:res.data.passbookImg,
                         });
                         setIsDocsUploaded(true);
+                    }
+                    if(res.data.aadhar!=='' && res.data.pan!==null){
+                        setIsDocSubmitted(true);
                     }
                 }
             
@@ -272,7 +277,7 @@ const DocumentsCard = ({
                 <div className='row '> 
                     <div className='col-sm-6 text-center offset-3 mt-4 btn-box'>
                    {
-                      isDocsUploaded  ?  <button className='btn  btn-block orange darken-1' style={{
+                      isDocsUploaded || !isDocSubmitted  ?  <button className='btn  btn-block orange darken-1' style={{
                         color:'#ffffff',
                         fontSize:'20px',
                         fontWeight:'bold'
@@ -294,7 +299,7 @@ const DocumentsCard = ({
                 <div className='row'>
                     <div className='col-sm-12 text-center'>
                         {
-                            aadharFrontImg==='' || aadharBackImg==='' || panImg ==='' || passbookImg === '' ? <strong className='text-danger'>Note : Please upload only image file</strong> :<strong className='text-success'>You have uploaded the KYC documents</strong>
+                            !isDocSubmitted ? <strong className='text-danger'>Please submit aadhar number and PAN first.</strong> :aadharFrontImg==='' || aadharBackImg==='' || panImg ==='' || passbookImg === '' ? <strong className='text-danger'>Note : Please upload only image file</strong> :<strong className='text-success'>You have uploaded the KYC documents</strong>
                         }
                     </div>   
                      

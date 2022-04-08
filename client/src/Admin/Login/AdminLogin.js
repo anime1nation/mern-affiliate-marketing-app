@@ -1,10 +1,10 @@
 import React,{useEffect,useState} from 'react';
 import './login.css';
 import {connect} from 'react-redux';
-import {loginAdmin} from '../../action/admin';
-import {useNavigate} from 'react-router-dom';
-
-const AdminLogin = ({loginAdmin}) => {
+import {loadAdmin, loginAdmin} from '../../action/admin';
+import {useNavigate,Navigate} from 'react-router-dom';
+import Alerts from '../../Components/Alerts';
+const AdminLogin = ({isAuthenticated,admin,loginAdmin,loadAdmin}) => {
 
   const navigate= useNavigate();
 
@@ -24,21 +24,39 @@ const AdminLogin = ({loginAdmin}) => {
     console.log(formData);
     try{
       loginAdmin({username,password});
-      navigate('/admin')
+      setTimeout(() => {
+        if(isAuthenticated && admin){
+          navigate('/admin');
+        }},1000 ) 
     }catch(err){
       console.log(err.message);
       alert('Login Failed');
     }
   }
 
+  
+
+  useEffect(() => {
+    if(localStorage.adminToken){
+      loadAdmin();
+    }
+    if(isAuthenticated && admin){
+      navigate('/admin');
+    }
+  },[]);
+
+  if(isAuthenticated && admin){
+    navigate('/admin');
+  }
+
 
   return (
     <div className="uf-form-signin">
     <div className="text-center">
-      
-    <h1 className="text-white h3">Account Login</h1>
+      <Alerts />
+    <h1 className="text-dark h3">Account Login</h1>
     </div>
-    <form className="mt-4">
+    <div className="mt-4">
       <div className="input-group uf-input-group input-group-lg mb-3">
         <span className="input-group-text fa fa-user"></span>
         <input type="text" name="username"  value={username} onChange={e=>{
@@ -54,12 +72,12 @@ const AdminLogin = ({loginAdmin}) => {
       <div className="d-flex mb-3 justify-content-between">
         <div className="form-check">
           <input type="checkbox" className="form-check-input uf-form-check-input" id="exampleCheck1" />
-          <label className="form-check-label text-white" for="exampleCheck1">Remember Me</label>
+          <label className="form-check-label text-white" htmlFor="exampleCheck1">Remember Me</label>
         </div>
         <a href="#">Forgot password?</a>
       </div>
       <div className="d-grid mb-4">
-        <button type="submit" className="btn uf-btn-primary btn-lg" onClick={(e)=>{
+        <button  className="btn uf-btn-primary btn-lg" onClick={(e)=>{
           onSubmitHandler(e);
         }}>Login</button>
       </div>
@@ -77,7 +95,7 @@ const AdminLogin = ({loginAdmin}) => {
         <span className="text-white">Don't have an account?</span>
         <a href="register.html">Sign Up</a>
       </div>
-    </form>
+    </div>
   </div>
 
   )
@@ -85,9 +103,10 @@ const AdminLogin = ({loginAdmin}) => {
 
 const  mapStateToProps = (state) => {
   return{
-
+    isAuthenticated: state.adminAuth.isAuthenticated,
+    admin: state.adminAuth.admin
   }
 }
 
 
-export default connect(null,{loginAdmin})(AdminLogin);
+export default connect(mapStateToProps,{loginAdmin,loadAdmin})(AdminLogin);

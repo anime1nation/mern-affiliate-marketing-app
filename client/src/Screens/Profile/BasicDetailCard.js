@@ -3,8 +3,12 @@ import './profile.css'
 import axios from 'axios';
 import { setAlert } from '../../action/alert';
 import Alerts from '../../Components/Alerts';
-import loader from '../../assets/image/loader.gif'
-const BasicDetailCard = () => {
+import loader from '../../assets/image/loader.gif';
+import {connect} from 'react-redux';
+
+const BasicDetailCard = ({
+    setAlert
+}) => {
     
     const [isloading,setIsLoading] = useState(true);
     const [isdisabled,setIsdisabled] = useState(false);
@@ -38,6 +42,50 @@ const BasicDetailCard = () => {
         }catch(err){
             console.log(err.message);
 
+        }
+    }
+
+
+    const aadharBlur = async (e) => {
+       const aadharNo = e.target.value;
+         if(aadharNo.length===12){
+            try{
+                const res = await axios.get(`/api/admin/check-aadhar/${aadharNo}`);
+                
+                
+            }catch(err){
+                console.log(err.message);
+                const errors = err.response.data.errors;
+                if(errors){
+                    errors.forEach(error => setAlert(error.msg,'danger'));
+                }
+                setFormData({...formData,aadhar:''});
+            }
+            }else{
+                
+                setAlert('Aadhar number should be 12 digits','danger');
+                setFormData({...formData,aadhar:''});
+            }
+    }
+    const panBlur = async (e) => {
+        const panNo = e.target.value;
+        if(panNo.length===10){
+            try{
+                const res = await axios.get(`/api/admin/check-pan/${panNo}`);
+
+                
+            }catch(err){
+                console.log(err.message);
+                const errors = err.response.data.errors;
+                if(errors){
+                    errors.forEach(error => setAlert(error.msg,'danger'));
+                }
+                setFormData({...formData,pan:''});
+            }
+        }else{
+                
+            setAlert('PAN should must have 10 character','danger');
+            setFormData({...formData,pan:''});
         }
     }
 
@@ -121,6 +169,8 @@ const BasicDetailCard = () => {
                             </td>
                             <td> <input type='text' name='aadhar' value={aadhar} onChange={e=>{
                                 onChange(e)
+                            }} onBlur={e=>{
+                                aadharBlur(e)
                             }} className=' form-control-md validate' disabled={isdisabled} required={true}/> </td>    
                         </tr> 
 
@@ -130,7 +180,11 @@ const BasicDetailCard = () => {
                             </td>
                             <td> <input type='text' name='pan' value={pan} onChange={e=>{
                                 onChange(e)
-                            }} className=' form-control-md validate' disabled={isdisabled} /> </td>    
+                            }} onBlur={
+                                e=>{
+                                    panBlur(e)
+                                }
+                            } className=' form-control-md validate' disabled={isdisabled} /> </td>    
                         </tr>  
 
                         <tr>
@@ -155,9 +209,9 @@ const BasicDetailCard = () => {
 
 
         </div>
-            <Alerts />
+
    </div>
   )
 }
 
-export default BasicDetailCard;
+export default connect(null,{setAlert})(BasicDetailCard);

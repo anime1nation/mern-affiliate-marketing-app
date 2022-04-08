@@ -38,10 +38,10 @@ const Enrollment = ({
         uplinkId:null,
         dob:'',
         pin: '',
-        enrollPackage: ''
+        
     });
 
-    const {name, username, email, password, address1, address2, referalId,pin,enrollPackage ,refralName,uplinkId,dob} = formData;
+    const {name, username, email, password, address1, address2, referalId,pin ,refralName,uplinkId,dob} = formData;
 
     const onChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -70,7 +70,7 @@ const Enrollment = ({
                 fetchName();
                
             }catch(err){
-                console.log(err);
+                
                 setAlert('Referal Id is not valid', 'danger');
             }
         }
@@ -80,7 +80,8 @@ const Enrollment = ({
 
     const fetchName = async() =>{
         try {
-            const res =  await axios.get(`api/user/uplink-name/${referalId}`);
+
+            const res =  await axios.get(`api/user/uplink-name/${referalId.toUpperCase()}`);
            
             if(res.data.uplink.isAdminBlocked){
                 setAlert('This user has been blocked. Please use any other referal ID','danger')
@@ -93,28 +94,13 @@ const Enrollment = ({
             }
 
         } catch (error) {
-            console.log(error.message);
+            
             setAlert('Referal Id is not valid', 'danger');
         }
     }
 
         
-    const getWallet = async() =>{
-        try{
-            const res = await axios.get('/api/user/get-wallet-deatils');
-
-            setWallet(res.data);
-            if(wallet.amount===1199){
-                    setFormData({...formData,enrollPackage:'silver'})
-            }else{
-                setFormData({...formData,enrollPackage:'gold'})
-            }
-        }catch(err){
-            console.log(err.message);
-            
-        }
-    }
-
+    
  
 
     
@@ -130,7 +116,7 @@ const Enrollment = ({
             if (isMounted) {
                
                isUserEnrolled(); 
-               getWallet();
+               
                 
             }
             
@@ -165,7 +151,7 @@ const Enrollment = ({
                 navigate('/profile');
             }, 2000);
         }catch(err){
-            console.log(err.message);
+            
         }
     }
   return (
@@ -257,10 +243,10 @@ const Enrollment = ({
                                         </div>
 
                                         <div className="input-group  mb-3">
-                                            <label className=""  htmlFor="refralName">Date of Birth</label>
-                                            <input type="text" className="form-control" placeholder='YYYY-MM-DD' name='dob' value={dob} aria-label="Small" aria-describedby="inputGroup-sizing-sm" onChange={e=>{
+                                            <label className=""  htmlFor="dob">Date of Birth</label>
+                                            <input type="date" className="form-control" placeholder='YYYY-MM-DD' name='dob' value={dob} aria-label="Small" aria-describedby="inputGroup-sizing-sm" onChange={e=>{
                                                 onChange(e);
-                                            }} readOnly={true} />
+                                            }}  />
                                         </div>
         
                                         

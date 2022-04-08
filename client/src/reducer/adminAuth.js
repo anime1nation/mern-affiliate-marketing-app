@@ -1,20 +1,18 @@
 import {
     ADMIN_LOGIN,
     ADMIN_LOGIN_FAIL,
-    ADMIN_ADDED,
-    ADMIN_ADD_FAIL,
     ADMIN_LOADED,
     ADMIN_LOAD_FAIL,
+    ADMIN_LOGOUT
 
 } from '../action/types';
 
 const initialState = {
     adminToken: localStorage.getItem('adminToken'),
     loading: false,
-    error: null,
     admin: null,
     isAuthenticated: false,
-    newAdmin: null,
+    
 }
 
  const adminReducer = (state = initialState, action) => {
@@ -31,14 +29,17 @@ const initialState = {
                 
             }
         case ADMIN_LOGIN_FAIL:
-            
+        case ADMIN_LOGOUT:
+        case ADMIN_LOAD_FAIL:         
+         localStorage.removeItem('adminToken');   
             return {
-                ...state,
                 loading: false,
                 isAuthenticated: false,
                 admin: null,
+                adminToken:null,
                 error: payload,
             }
+
         case ADMIN_LOADED:
             return {
                 ...state,
@@ -47,28 +48,7 @@ const initialState = {
                 admin: payload,
                 error: null,
             }
-        case ADMIN_LOAD_FAIL:
-            return {
-                ...state,
-                loading: false,
-                isAuthenticated: false,
-                admin: null,
-                error: payload,
-            }
-        case ADMIN_ADDED:
-            return {
-                ...state,
-                loading: false,
-                newAdmin: payload,
-               
-            }
-        case ADMIN_ADD_FAIL:
-            return {
-                ...state,
-                loading: false,
-                isAdded: null,
-                
-            }
+        
         default:
             return state;
     }

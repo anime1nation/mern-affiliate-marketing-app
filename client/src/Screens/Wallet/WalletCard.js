@@ -102,7 +102,7 @@ const WalletCard = ({
 
     const onSubmitHandler = async(e) => {
         e.preventDefault();
-        console.log(formData);
+        
         try{
             walletReqSubmit({
              amount,upiId,upi,country,state,city,paySlip,remarks

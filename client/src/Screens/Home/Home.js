@@ -52,14 +52,16 @@ import Notice from './Notice';
         
         isMounted =true;
         if(isMounted){
-            loadUser();
+            if(localStorage.token){
+                loadUser();
+            }
         }
         return()=>{
             isMounted=false
         }
     }, []);
 
-    if(isAuthenticated){
+    if(isAuthenticated && user ){
         return <Navigate to='/home'/>;}
 
     
@@ -255,7 +257,7 @@ import Notice from './Notice';
 
 const mapStateToProps = (state) => ({
     auth: state.auth,
-    isOpen : state.burgerMenu.isOpen
+    isOpen : state.burgerMenu.user.isOpen
 });
 
 

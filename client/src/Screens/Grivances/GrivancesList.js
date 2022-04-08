@@ -15,7 +15,7 @@ const GrivancesList = () => {
         try{
             const res = await axios.get('/api/user/grivance-list')
             setGrivances(res.data.grivanceList);
-            console.log(res.data);
+            
             setIsLoading(false);
         }catch(err){
                 console.log(err.message);

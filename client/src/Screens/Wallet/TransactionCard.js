@@ -17,7 +17,7 @@ const TransactionCard = ({
         try{
             const res = await axios.get(`/api/user/latest-transactions`);
             setTransactions(res.data.dayEarning);
-            console.log(res.data.dayEarning);
+          
             setLoading(false);
         }catch(err){
             setLoading(true);
@@ -63,7 +63,7 @@ const TransactionCard = ({
                         firstGenEarn={transaction.firstGenDayEarning}
                         secondGenEarn={transaction.secondGenDayEarning}
                         thirdGenEarn={transaction.thirdGenDayEarning}
-                        paymentStatus={transaction.isApproved ? 'Approved' : 'Pending'}
+                        paymentStatus={transaction.isApproved ? 'Approved' : transaction.isDeclined ? 'Declined' : 'Pending'}
                     />)): <h4 className='text-center'>No transaction Yet</h4> 
                     
                     }

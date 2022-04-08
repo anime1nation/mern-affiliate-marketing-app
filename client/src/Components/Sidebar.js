@@ -20,9 +20,11 @@ const onCloseHandler = () => {
 }
 
 const handleLogout = () => {
-    localStorage.removeItem('token');
+    
     logout();
-    navigate('/')
+    setTimeout(() => {
+        navigate('/login');
+    }, 1000);
 
 
 }
@@ -48,8 +50,8 @@ return(
 
         
         }
-        <Link className="menu-item" to="#-us">About Us</Link>
-        <Link className="menu-item" to="#">Contact Us</Link>
+        <Link className="menu-item" to="/about-us">About Us</Link>
+        <Link className="menu-item" to="#footer">Contact Us</Link>
         
         
         {

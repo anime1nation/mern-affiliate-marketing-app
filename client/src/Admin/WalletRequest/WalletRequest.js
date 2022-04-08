@@ -45,7 +45,7 @@ const  WalletRequest = ({loadWalletRequest}) => {
 {
     isLoading ? <div className='text-center'>
         <img src={loader} alt="loader" className="loader" />
-        <p className='txt-wallet-card'  className='text-info'>Loading...</p ></div> :
+        <p className='txt-wallet-card text-info' >Loading...</p ></div> :
 
 
          <div className='row'>

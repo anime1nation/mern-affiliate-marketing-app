@@ -1,6 +1,5 @@
-import React,{Fragment, useState, useCallback, useEffect} from 'react'
-import Lightbox from "react-awesome-lightbox";
-import "react-awesome-lightbox/build/style.css";
+import React,{useState,  useEffect} from 'react'
+
 import icon from '../../assets/image/icon.png'
 import {useParams} from 'react-router-dom';
 import axios from 'axios';
@@ -56,7 +55,7 @@ const UserDetailCards = () => {
                 }
             }    
 
-            const res = await axios.put(`/api/admin/kyc-decline/${id}`,body,config);
+            const res = await axios.post(`/api/admin/kyc-decline/${id}`,body,config);
             setAlert('Declined KYC Request', 'success');
             setRemarks('');
             setShow(false);
@@ -93,7 +92,10 @@ return(
         top: '40%',
         left: '40%',
     }}>
-    <img src={loader} alt="loader" />
+    <div className='spinner-border text-primary text-center' role='status'>
+        <span className='sr-only'>Loading...</span>
+        </div>
+    
     </div>:
 
 
@@ -222,6 +224,7 @@ return(
                                         objectFit:'cover'
 
                                     }}/>
+                                    <h6>Aadhar Front </h6>
                                
                         </div>
 
@@ -232,7 +235,7 @@ return(
                                         height:'10rem',
                                         objectFit:'cover'
                                     }}/>
-                               
+                               <h6>Aadhar Back</h6>
                         </div>
 
                         <div className='col-md-3 mt-3' >
@@ -242,7 +245,7 @@ return(
                                         height:'10rem',
                                         objectFit:'cover'
                                     }}/>
-                               
+                               <h6>PAN </h6>
                         </div>
 
                         <div className='col-md-3  mt-3' >
@@ -252,7 +255,7 @@ return(
                                         height:'10rem',
                                         objectFit:'cover'
                                     }}/>
-                               
+                               <h6>Passbook</h6>
                         </div>
             
         </div>         
@@ -276,7 +279,7 @@ return(
 
 }
         {
-            !show ? (!user.isKYCApproved ? <div className='row'>
+            !show ? (!user.isKYCApproved || !user.isKYCDeclined  ? <div className='row'>
             <div className='col-sm-6'>
                 <a className='btn btn-primary btn-block' onClick={(e)=>{
                     onApproval();
@@ -287,7 +290,7 @@ return(
                     setShow(true);
                 }}> Decline </a>
               </div>    
-          </div>: <strong className='text-success'>User KYC already approved</strong> )    
+          </div>:  user.isKYCApproved ?<strong className='text-success'>User KYC already approved</strong>:<strong className='text-success'>User KYC Rejected</strong> )    
         : null  
         }
         </div>

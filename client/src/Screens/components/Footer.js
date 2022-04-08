@@ -7,7 +7,7 @@ import './footer.css';
 const Footer = () => {
     return (
         <Fragment>
-                <div className="row footer-box" style={{
+                <div className="row footer-box" id='footer' style={{
                 backgroundColor: '#022140',
                 padding:'0',
                 marginBottom:'0',
@@ -21,7 +21,7 @@ const Footer = () => {
                         }}
                         />
                         <p className="mt-3 text-light ml-2 footer-box-address">
-                            FX-BROKERAGE LTD</p>
+                            FX-BROKERAGE </p>
                             <span className="footer-box-address-span mx-2">
                                 <i className="fa-solid fa-envelope mr-2"></i>
                                support@fxbrokeragebusiness.com

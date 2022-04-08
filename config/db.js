@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const config=require('config');
 const mongoURI=config.get('mongoURI');
 
-const db = process.env=='production'?mongoURI:'mongodb://127.0.0.1:27017/fx'; 
+const db = mongoURI
 
  const connectDB = async () => {
   try {

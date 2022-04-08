@@ -6,21 +6,21 @@ import AdminNavbar from './Components/AdminNavbar';
 import AdminSidebar from './Components/AdminSidebar';
 import {connect} from 'react-redux';
 import { loadAdmin } from '../action/admin';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,Navigate } from 'react-router-dom';
 const Admin = ({
   isAuthenticated,loadAdmin
 }) => {
 
+  const navigate = useNavigate();
   useEffect(() => {
     loadAdmin();
+    console.log(isAuthenticated)
+    if(!isAuthenticated){
 
+     navigate('/admin/login')
+    
+      }
   },[]);
-  const navigate = useNavigate();
-  if(!isAuthenticated){
-
-  navigate('/admin/login');
-
-  }
   return (
     <Fragment>
       <AdminSidebar />

@@ -148,7 +148,8 @@ export const signIn = ({username,password}) => async dispatch =>{
             payload:res.data
         });
         
-        dispatch(setAlert('Login Successful','success'));
+       
+        dispatch(loadUser());
     }catch(err){
         const errors = err.response.data.errors;
         if(errors){
@@ -160,9 +161,17 @@ export const signIn = ({username,password}) => async dispatch =>{
     }
 }
 
-export const logout = () =>dispatch=>{
-    localStorage.removeItem('token');
-    dispatch({ type:USER_LOGOUT} );
+export const logout = () => async dispatch=>{
+    
+    try{
+        dispatch({ type:USER_LOGOUT} );
+        if(localStorage.getItem('token')){
+
+            localStorage.removeItem('token');
+        }
+    }catch(err){
+        console.log(err.message);
+    }
 
 
    

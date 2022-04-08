@@ -35,13 +35,13 @@ export const loadDownline = ({
         setUserAuthToken(localStorage.token);
     }
         try{
-            console.log(userid);
+            
             const res = await axios.get(`/api/dashboard/get-downline/${userid}`);
             dispatch({
                 type:DOWNLINE_LOADED,
                 payload:res.data.firstGen
             });
-            console.log(res.data.firstGen);
+            
         }catch(err){
             const errors = err.response.data.errors;
             if(errors){

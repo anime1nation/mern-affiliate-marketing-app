@@ -160,8 +160,11 @@ const ProfileCard = ({
                                       userInfo.uplinkReferId
                                       }</td></tr> 
                                   <tr><td> Package</td><td>{userInfo.package}</td></tr> 
-                                  <tr><td> Status</td><td>{userInfo.status}</td></tr> 
-                                  <tr><td> KYC status</td><td>{userInfo.KYCstatus}</td></tr>   
+                                  
+                                  <tr><td> KYC status</td><td>{userInfo.KYCstatus}</td></tr>
+                                  {
+                                    userInfo.isKYCDeclined ? <tr><td>Rejection Reason:</td><td>{userInfo.declineReason}</td></tr>:null
+                                  }   
                                </tbody>
                             </table>
                             </div>

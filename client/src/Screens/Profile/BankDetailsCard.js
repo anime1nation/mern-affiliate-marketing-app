@@ -39,6 +39,24 @@ const BankDetailsCard = ({
         }
     }
 
+    const accountNoCheck = async (e) => {
+        const accountNumber = e.target.value;
+        try{
+            const res = await axios.get(`/api/admin/check-bank-account/${accountNumber}`);
+            
+        }
+        catch(err){
+            console.log(err.message);
+            const errors = err.response.data.errors;
+            if(errors){
+                errors.forEach(error => setAlert(error.msg,'danger'));
+            }
+            setFormData({...formData,accountNo:''});
+        }
+    }
+
+
+
     let isMounted = useRef(false);
 
     useEffect(() => {
@@ -89,15 +107,19 @@ const BankDetailsCard = ({
         <div className='card shadow-md' style={{
             borderRadius: '10px',
         }}>
+
             {
                 isloading ?
                 <div className='d-flex justify-content-center'>
                     <img src={loader} alt='loader' style={{width:'100px'}}/>
                 </div>
                     :
-            <div className='card-body col-sm-6'>
+            <div className='card-body col-sm-8'>
+                <Alerts />
                 <div className='row'>
+                
                     <div className='col-sm-12'>
+                    
                         <h4 className='text-center'>Bank Details</h4>
                     </div>
                     </div>
@@ -109,6 +131,8 @@ const BankDetailsCard = ({
                             </td>
                             <td> <input type='text'  className=' form-control-md validate' name='accountNo' value={accountNo} onChange={e=>{
                                 onChange(e)
+                            }} onBlur={e=>{
+                                accountNoCheck(e)
                             }} disabled={isdisabled} required={true}  /> </td>    
                         </tr> 
 
@@ -191,7 +215,7 @@ const BankDetailsCard = ({
              
             }
 
-            <Alerts />
+           
         </div>
 
    </div>

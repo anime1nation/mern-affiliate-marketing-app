@@ -52,7 +52,7 @@ const SingleUserInfo = ({loadSingleUser,isAuthenticated,setAlert}) => {
         
 
            getDocs();
-              getBankDetails();
+            getBankDetails();
     },[])
     
 
@@ -150,7 +150,7 @@ const SingleUserInfo = ({loadSingleUser,isAuthenticated,setAlert}) => {
                                 <tr>
                                     <td>Joining Date</td>
                                     <td>
-                                       {user.enrolledDate ? moment(user.enrolledDate).format("DD-MM-YYYY") :'NA'}
+                                       { moment(user.enrolledDate).format('DD-MM-YYYY')}  
                                     </td>
                                     
                                 </tr>  
@@ -237,27 +237,33 @@ const SingleUserInfo = ({loadSingleUser,isAuthenticated,setAlert}) => {
 
         <div className='row shadow-md'>
             <div className='col-md-4'>
-                <img src={user.panImg ? user.panImg : 'NA'} alt="pan" className="img-fluid" style={{
+              { user.panImg!=='' ? <img src={ user.panImg } alt="pan" className="img-fluid" style={{
                     width: '200px',
-                    height: '200px',}} />
-
+                    height: '200px',}} /> : <span>No Image</span>}
+              <p> PAN </p>
             </div>  
             <div className='col-md-4'>
-                <img src={user.aadharFrontImg ? user.aadharFrontImg : 'NA'} alt="pan" className="img-fluid" style={{
+               {user.aadharFrontImg !=='' ? <img src={user.aadharFrontImg } alt="pan" className="img-fluid" style={{
                     width: '200px',
-                    height: '200px',}} />
+                    height: '200px',}} /> : <span>No Image</span>
 
-
+               }
+               <p>Aadhar Front</p>
             </div>  
             <div className='col-md-4'>
-                    <img src={user.aadharBackImg ? user.aadharBackImg : 'NA'} alt="pan" className="img-fluid" style={{
+                 {user.aadharBackImg!==''  ? <img src={user.aadharBackImg } alt="pan" className="img-fluid" style={{
                         width: '200px',
-                        height: '200px',}} />
+                        height: '200px',}} />: <span>No Image</span>
+                        }
+                       <p>Aadhar Back</p> 
             </div>  
             <div className='col-md-4'>
-                        <img src={user.passbookImg ? user.passbookImg : 'NA'} alt="pan" className="img-fluid" style={{
+                    {user.passbookImg  ?  <img src={user.passbookImg } alt="pan" className="img-fluid" style={{
                             width: '200px',
-                            height: '200px',}} />
+                            height: '200px',}} />:
+                            <span>No Image</span>
+                    }
+                    <p>Passbook</p>
             </div>  
             
          </div>    

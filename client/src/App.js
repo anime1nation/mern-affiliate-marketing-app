@@ -21,11 +21,14 @@ import ForgetPassword from './Screens/Login/ForgetPassword';
 import Sidebar from './Components/Sidebar';
 import GrivancesList from './Screens/Grivances/GrivancesList';
 import { loadUser } from './action/auth';
+import { loadAdmin } from './action/admin';
 import setUserAuthToken from './utils/setUserAuthToken';
+import setAdminAuthToken from './utils/setAdminAuthToken';
 import { connect } from 'react-redux';
 import KYCRequest from './Admin/KYCRequest/KYCRequest';
 import SingleUserKYC from './Admin/KYCRequest/SingleUserKYC';
 import Admin from './Admin/Admin';
+import AllUser from './Admin/UserInfo/AllUser';
 import WalletRequest from './Admin/WalletRequest/WalletRequest';
 import SingleUserInfo from './Admin/UserInfo/SingleUserInfo';
 import DailyPayout from './Admin/DailyPayout/DailyPayout';
@@ -39,9 +42,14 @@ import SingleGrivances from './Screens/Grivances/SingleGrivances'
 
 import AdminGrivancesList from './Admin/Grivances/AdminGrivancesList';
 import AdminSingleGrivances from './Admin/Grivances/AdminSingleGrivances';
-
+import About from './Screens/About/About';
 if(localStorage.token){
   setUserAuthToken(localStorage.token);
+
+}
+
+if(localStorage.adminToken){
+  setAdminAuthToken(localStorage.adminToken);
 
 }
 
@@ -54,6 +62,7 @@ const  App = ({
 
   useEffect(() => {
     store.dispatch(loadUser());
+    store.dispatch(loadAdmin());    
   }, []);
   
 
@@ -76,8 +85,10 @@ const  App = ({
            <Route path="/grivances" element={<GrivancesList />} /> 
            <Route path="/grivances/:referenceId" element={<SingleGrivances/>} /> 
           <Route path="/forget-password" element={<ForgetPassword />} /> 
+          <Route path="/about-us" element={<About />} />
 
           <Route path="/admin" element={<Admin />} />
+          <Route path="/admin/registered-users" element={<AllUser />} />
           <Route path='/admin/kyc-request' element={<KYCRequest />}   />
           <Route path='/admin/pending-wallet-request' element={<WalletRequest />}   />
           <Route path='/admin/user-info/:id' element={<SingleUserInfo />}   />

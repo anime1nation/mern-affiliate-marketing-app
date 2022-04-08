@@ -1,4 +1,4 @@
-import React, { useEffect,useState,useRef,useLayoutEffect } from 'react'
+import React, { useEffect,useState,useRef } from 'react'
 import SimpleBar from 'simplebar-react';
 import './userinfo.css';
 import { connect } from 'react-redux';
@@ -26,7 +26,7 @@ const UserInfo = ({
     const loadEnrolledUser = async () => {
 
         try{
-            const res = await axios.get('/api/admin/enrolled-users');
+            const res = await axios.get('/api/admin/verified-users');
             setUsers(res.data);
             setIsloading(false)
         }catch(err){
@@ -73,7 +73,7 @@ const UserInfo = ({
     
     const navigate = useNavigate();
     let isMounted = useRef(false);
-    useLayoutEffect(() => {
+    useEffect(() => {
 
         isMounted=true;
         setTimeout(() => {
@@ -82,8 +82,12 @@ const UserInfo = ({
             }
         },1000);
 
+        return () => {
+            isMounted=false;
+        }
         
     }, []);
+
 
     
 
@@ -159,7 +163,7 @@ const UserInfo = ({
                           <th>Refer Id</th>
                           <th>Package</th>
                           <th>Sponcer Id</th>
-                          <th> Enrollment Date </th>
+                          <th>Enrollment Date</th>
                           <th></th>
                          </tr>
                     </thead>
@@ -169,7 +173,7 @@ const UserInfo = ({
                           {
                           
                           users.length <1 ? 
-                            <tr className='text-center'>No User Found</tr>
+                            <tr className='text-center'><th> No User Found </th></tr>
                           :users.map((user,index)=>{
                                 return(
                                     <tr key={index} className='shadow-md pt-5' style={{

@@ -4,17 +4,16 @@ const {check,validationResult} = require('express-validator');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const config = require('config');
-const accountSid = config.get('TWILIO_ACCOUNT_SID');
-const authToken = config.get('TWILIO_AUTH_TOKEN');
+const smsKey = config.get('smsSecret');
+
 const userAuth = require('../../middleware/userAuth');
 const User = require('../../models/User');
 const Notice = require('../../models/Notice');
 const Grivances = require('../../models/Grivances');
 const moment = require('moment');
 const mongoose = require('mongoose');
-const client = require('twilio')(accountSid, authToken,{
-    lazyLoading: true
-});
+const unirest = require('unirest');
+
 
 
 router.get('/',userAuth,async (req,res)=>{
@@ -112,11 +111,11 @@ router.post('/sign-in',[
 
         
         if(!user){
-            return res.status(400).json({errors:[{msg:'Invalid credentials'}]});
+            return res.status(400).json({errors:[{msg:'Username is not correct'}]});
         }
         const isMatch = await bcrypt.compare(password,user.password);
         if(!isMatch){
-            return res.status(400).json({errors:[{msg:'Invalid credentials'}]});
+            return res.status(400).json({errors:[{msg:'Password is not correct'}]});
         }
         
         if(!user.isWalletPaid){
@@ -209,6 +208,7 @@ router.post('/wallet-request',userAuth,async(req,res)=>{
             return res.status(500).json({errors:[{msg: 'Wallet already paid'}]});
         }
         //generate random 5 letter string
+        const package =  amount ==  '999' ? 'silver' : 'gold';
         const paymentId = Math.random().toString(36).substring(2, 7);
         const data = {
             paymentId,
@@ -220,13 +220,14 @@ router.post('/wallet-request',userAuth,async(req,res)=>{
             city,
             paySlip,
             datePaid:Date.now(),
-            remarks
+            remarks,
 
         }
         
         //update user and insert data in wallet
         user.wallet=data;
         user.isWalletPaid = true;
+        user.package = package;
         await user.save();
         return res.json({msg:`Wallet request submitted, Payment ID: ${paymentId}`});
     }catch(err){
@@ -240,14 +241,30 @@ router.post('/wallet-request',userAuth,async(req,res)=>{
 router.post('/send-otp',async (req, res) => {
     const {name,mobile,otp} = req.body;
     try{
+  
         
-        client.messages
-  .create({
-     body: `${name}, Your OTP for FX Brokerage registration is ${otp}`,
-     from: '+16264697276',
-     to: '+91'+mobile
-   })
-  .then(message => console.log(message.sid));
+        
+        var req = unirest("POST", "https://www.fast2sms.com/dev/bulkV2");
+        
+        req.headers({
+          "authorization": smsKey
+        });
+        
+        req.form({
+            "sender_id": "FXBROKERAGE",
+            "message": name.toUpperCase()+" ,Your OTP verification code for FX Brokerage is "+otp,
+            "route": "v3",
+          "numbers": mobile,
+        });
+
+        
+        req.end(function (res) {
+          if (res.error) {
+              console.log(res.error);
+          }
+        
+          console.log(res.body);
+        });
         
          
    return res.status(200).send({otp});
@@ -308,7 +325,6 @@ router.post('/enroll',userAuth,async(req,res)=>{
             uplinkId,
             pin,
             username,
-            enrollPackage
         } = req.body;
         console.log(req.body);
         const user = await User.findById(id);
@@ -331,7 +347,7 @@ router.post('/enroll',userAuth,async(req,res)=>{
        
         const data = {
             referId:userReferId,
-            uplinkReferId:referalId,
+            uplinkReferId:referalId.toUpperCase(),
             name,
             adress1,
             adress2,
@@ -341,7 +357,6 @@ router.post('/enroll',userAuth,async(req,res)=>{
             uplinkId,
             isEnrolled:true,
             username,
-            package:enrollPackage,
             enrolledDate:moment().format('YYYY-MM-DD'),
 
         }
@@ -614,6 +629,8 @@ router.get('/kyc-documents-uploaded',userAuth,async(req,res)=>{
             return res.status(500).json({errors:[{msg: 'Wallet not paid'}]});
         }
         const data = {
+            aadhar:user.aadhar,
+            pan:user.pan,
             aadharFrontImg:user.aadharFrontImg,
             aadharBackImg:user.aadharBackImg,
             panImg:user.panImg,
@@ -751,6 +768,8 @@ router.get('/profile-details',userAuth,async(req,res)=>{
             referId:user.referId,
             staus:user.isActive ? 'Active' : 'Inactive',
             KYCstatus: user.isKYCApproved ? 'Approved' : (user.isKYCDeclined ? 'Rejected' : 'Pending'),
+            declineReason:user.KYCDeclineReason,
+            isKYCDeclined:user.isKYCDeclined,
             package:user.package,
             dob:user.dob,
             profileImg:user.profileImg,

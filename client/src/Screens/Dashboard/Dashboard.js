@@ -35,12 +35,14 @@ const Dashboard = ({
             const res = await axios.get('/api/user/today-earning');
            
             
-            setTodayIncome(res.data.todayEarning);
+            setTodayIncome(res.data);
+           
             setIsLoading(false);
+            
 
         }catch(err){
             setIsLoading(false);
-            console.log(err.message);
+            
         }
     }
 
@@ -53,7 +55,7 @@ const Dashboard = ({
 
         }catch(err){
             setIsLoading(false);
-            console.log(err.message);
+            
         }
     }
 

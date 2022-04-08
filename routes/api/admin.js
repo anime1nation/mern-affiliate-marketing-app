@@ -37,7 +37,7 @@ router.get('/', adminAuth, async (req, res) => {
 });
 
 router.post('/add-admin', [
-    check('name', 'Name is required').not().isEmpty(),
+    check('username', 'Name is required').not().isEmpty(),
     check('mobile', 'Mobile is required').isNumeric().isLength({ min: 10, max: 10 }),
 ], async (req, res) => {
     const errors = validationResult(req);
@@ -48,6 +48,7 @@ router.post('/add-admin', [
         const  {
             name,
             mobile,
+            username,
             email,
             password,
             role
@@ -72,6 +73,7 @@ router.post('/add-admin', [
             email,
             password: hashedPassword,
             role,
+            username,
             isActive:true,
         });
         await newadmin.save();
@@ -132,9 +134,78 @@ router.post('/login',[
 
 
 
+//check if aadhar alredy registed by user
+router.get('/check-aadhar/:aadhar', async (req, res) => {
+    try {
+        const aadhar = await User.findOne({ aadhar: req.params.aadhar });
+        if (aadhar) {
+            return res.status(422).json({ errors: [{ msg: 'Aadhar already registered by other user' }] });
+        }
+        return res.status(200).json(true);
+    } catch (err) {
+        console.log(err.message);
+        return res.status(500).json({ msg: 'Server error' });
+    }
+});
+
+//check if pan alredy registed by user
+router.get('/check-pan/:pan', async (req, res) => {
+    try {
+        const pan = await User.findOne({ pan: req.params.pan });
+        if (pan) {
+            return res.status(400).json({ errors: [{ msg: 'Pan already registered by other user' }] });
+        }
+        return res.status(200).json(true);
+    } catch (err) {
+        console.log(err.message);
+        return res.status(500).json({ msg: 'Server error' });
+    }
+});
+
+//check bank account alredy registed by user
+router.get('/check-bank-account/:bankAccount', async (req, res) => {
+    try {
+        const bankAccount = req.params.bankAccount;
+        const user = await User.findOne({ 'bankDetails.accountNo':bankAccount }).select('bankDetails name');
+        if (user) {
+        
+            return res.status(400).json({ errors: [{ msg: 'Bank account already registered by other user' }] });
+            
+        }
+        return res.status(200).json(true);
+    } catch (err) {
+        console.log(err.message);
+        return res.status(500).json({ msg: 'Server error' });
+    }
+});
 
 
 router.get('/enrolled-users', async(req,res)=>{
+    try{
+        const users = await User.find({isEnrolled:true,isWalletPaid:true,isAdminBlocked:false}).select('name mobile username referId isEnrolled package uplinkReferId enrolledDate');
+
+        res.json(users);
+    }catch(err){
+        console.log(err.message);
+        res.status(500).send('Server Error');
+    }
+
+})
+
+router.get('/registered-users', async(req,res)=>{
+    try{
+        const users = await User.find({isEnrolled:false}).select('name mobile username referId isEnrolled package uplinkReferId enrolledDate');
+
+        res.json(users);
+    }catch(err){
+        console.log(err.message);
+        res.status(500).send('Server Error');
+    }
+
+})
+
+
+router.get('/verified-users', async(req,res)=>{
     try{
         const users = await User.find({isEnrolled:true,isWalletPaid:true,isAdminBlocked:false,isKYCApproved:true}).select('username referId package uplinkReferId enrolledDate');
 
@@ -150,7 +221,7 @@ router.get('/enrolled-users', async(req,res)=>{
 router.get('/search-by-username/:username', async(req,res)=>{
     try{
         const username = req.params.username;
-        const user = await User.find({username:new RegExp(username, 'i'),isEnrolled:true,isKYCApproved:true}).select('username referId package uplinkReferId enrolledDate');
+        const user = await User.find({username:new RegExp(username, 'i'),isEnrolled:true}).select('username referId package uplinkReferId enrolledDate');
         if(!user){
             return res.status(400).json({msg:'No user with this username'});
         }
@@ -673,6 +744,11 @@ router.get('/kyc-details/:id', async(req,res)=>{
             bankDetails:user.bankDetails,
             referId:user.referId,
             uplinkReferId:user.uplinkReferId,
+            isKYCApproved:user.isKYCApproved,
+            isKYCDeclined:user.isKYCDeclined,
+            dob:user.dob,
+            enrolledDate:user.enrolledDate
+
 
         }
         res.status(200).json({data});
@@ -682,6 +758,37 @@ router.get('/kyc-details/:id', async(req,res)=>{
     }
 
 });
+
+
+
+//get all testimonials
+router.get('/all-testimonials',async(req,res)=>{
+    try{
+        const testimonials = await Testimonial.find();
+        res.status(200).json({testimonials});
+    }catch(err){
+        console.log(err.message);
+        res.status(500).send('Server Error');
+    }
+});
+
+//delete a testimonial
+router.delete('/delete-testimonial/:id',async(req,res)=>{
+    try{
+        const id = req.params.id;
+        const testimonial = await Testimonial.findById(id);
+        if(!testimonial){
+            return res.status(400).send({errors:[{msg:'Testimonial not found'}]});
+        }
+        await testimonial.remove();
+        res.status(200).json({msg:'Testimonial deleted successfully'});
+    }catch(err){
+        console.log(err.message);
+        res.status(500).send('Server Error');
+    }
+}
+)
+
 
 //get bank details of user
 router.get('/bank-details/:id', async(req,res)=>{
@@ -729,7 +836,7 @@ router.put('/kyc-request/:id', async (req,res)=>{
 });
 
 //decline kyc request
-router.put('/kyc-decline/:id', async (req,res)=>{
+router.post('/kyc-decline/:id', async (req,res)=>{
     try{
         const id = req.params.id;
         const user = await User.findById(id);
@@ -739,6 +846,15 @@ router.put('/kyc-decline/:id', async (req,res)=>{
         user.isKYCApproved = false;
         user.isKYCDeclined = true;
         user.KYCDeclineReason = req.body.reason;
+        //delete aadhar pan and images
+        user.aadhar='';
+        user.pan='';
+        user.aadharFrontImg='';
+        user.aadharFrontImg='';
+        user.panImg='';
+        user.passbookImg='';
+
+
         await user.save();
         res.json(user);
     }catch(err){

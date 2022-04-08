@@ -9,10 +9,9 @@ const [loading,setLoading] = useState(true);
 const fetchData = async () => {
     try{
         const res = await axios.get('/api/user/testimonials');
-        console.log(res.data)
         setTestimonials(res.data);
         setLoading(false);
-        console.log(res.data)
+        
     }catch(err){
         console.error(err.message);
     }

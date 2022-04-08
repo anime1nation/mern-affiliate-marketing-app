@@ -6,8 +6,7 @@ ADMIN_LOADED,
 ADMIN_LOAD_FAIL,
 ADMIN_LOGIN,
 ADMIN_LOGIN_FAIL,
-ADMIN_ADDED,
-ADMIN_ADD_FAIL} from '../action/types';
+ADMIN_LOGOUT} from '../action/types';
 import { setAlert } from './alert';
 import axios from 'axios';
 import setAdminAuthToken from '../utils/setAdminAuthToken'
@@ -24,7 +23,7 @@ export const  loadAdmin = () => async dispatch => {
             type: ADMIN_LOADED,
             payload: res.data
         });
-        console.log(res.data);
+        
     } catch (err) {
         dispatch({
             type: ADMIN_LOAD_FAIL,
@@ -48,13 +47,18 @@ export const loginAdmin = ({
             type: ADMIN_LOGIN,
             payload: res.data
         });
-        console.log(res.data);
         dispatch(loadAdmin());
+        dispatch(setAlert('Login Successful', 'success'));
     } catch (err) {
+        const errors = err.response.data.errors;
+        if (errors) {
+            errors.forEach(error => dispatch(setAlert(error.msg, 'danger')));
+        }
         dispatch({
             type: ADMIN_LOGIN_FAIL,
             payload: { msg: err.response.statusText }
         });
+
     }
 }
 
@@ -69,7 +73,7 @@ export const loadWalletRequest = () => async dispatch =>{
             type:ADMIN_WALLET_REQUEST_LOAD,
             payload:res.data
         });
-        console.log(res.data);
+        
 
     }catch(err){
         dispatch({
@@ -152,7 +156,7 @@ export const loadTransaction = () => async dispatch =>{
             type:ADMIN_TRANSACTION_LOAD,
             payload:res.data
         });
-        console.log(res.data);
+    
     
     }catch(err){
         dispatch({
@@ -164,4 +168,10 @@ export const loadTransaction = () => async dispatch =>{
   
     
     
+}
+
+export const AdminLogOut = () => async dispatch  =>{
+    dispatch({
+        type:ADMIN_LOGOUT,
+    });
 }

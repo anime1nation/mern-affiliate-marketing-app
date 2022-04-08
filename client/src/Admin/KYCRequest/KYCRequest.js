@@ -43,7 +43,7 @@ const KYCRequest = ({
     <Fragment>
         <div className='text-center'>
         <img src='/assets/image/loader.gif' alt="loader" className="loader" />
-        <p className='txt-wallet-card'  className='text-info'>Loading...</p >
+        <p className='txt-wallet-card text-info' >Loading...</p >
         </div> 
     </Fragment>
     :

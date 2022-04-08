@@ -33,7 +33,7 @@ const DownlineCard = ({
         }
         catch(err){
             setIsLoading(true);
-            console.log(err.message);
+            
             const errors = err.response.data.errors;
             errors.forEach(er => {
                 setAlert(er.message,'danger') 
@@ -139,7 +139,7 @@ const DownlineCard = ({
                                                     loadDownline({userid:downlinuser.referId});
                                                     setDownlineCount(downlineCount+1);
                                                 }catch(err){
-                                                    console.log(err.message);
+                                                    alert('Something went wrong');
                                                 }
                                             }} >
                                                     <img className='img-card-top img-rounded   img-fluid' src={user.profileImg} style={{

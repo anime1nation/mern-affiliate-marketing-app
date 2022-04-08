@@ -34,7 +34,7 @@ const Grivances = ({
             const buffer = await Convert(file);
         setFormData({...formData,[e.target.name]:buffer});
         }catch(err){
-            console.log(err.message);
+            
         }
     }
 
@@ -65,7 +65,7 @@ const Grivances = ({
                     img:'',
                 });
             }catch(err){
-                console.log(err.message);
+               
                 
             }
         }

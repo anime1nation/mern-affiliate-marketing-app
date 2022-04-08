@@ -34,7 +34,7 @@ const SingleGrivances = () => {
             setIsLoading(false)
             setIsdisabled(res.data.isClosed)
         }catch(err){
-            console.log(err.message);
+            
             setIsLoading(false)
         }
     }
@@ -45,14 +45,14 @@ const SingleGrivances = () => {
             const data = res.data;
             
           messageList=data;
-          console.log(messageList)
+         
            setComments(messageList) ;
             
            
             
           
         }catch(err){
-            console.log(err.message);
+           
             setIsLoading(false)
         }
     }

@@ -32,21 +32,12 @@ export default function (state = initialState, action) {
                 loading: false,
                 user: payload
             }
-        case USER_AUTH_ERROR:
-            return {
-                ...state,
-                isAuthenticated: false,
-                loading: false,
-                user:null,
-                token:null
-            }
-        
         
         case LOGIN_SUCCESS:
         case SIGNUP_SUCCESS:
             localStorage.setItem('token', payload.token);
             return {
-                ...state,
+                
                 ...payload,
                 isAuthenticated: true,
                 loading: false,
@@ -55,9 +46,9 @@ export default function (state = initialState, action) {
         case USER_LOGOUT:    
         case LOGIN_FAIL:    
         case SIGNUP_FAIL:
+        case USER_AUTH_ERROR:
             localStorage.removeItem('token');
             return {
-                ...state,
                 token: null,
                 isAuthenticated: false,
                 loading: false,
