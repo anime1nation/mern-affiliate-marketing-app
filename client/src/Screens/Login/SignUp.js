@@ -143,7 +143,7 @@ const onVerify = (e) => {
                                 opacity: '1'
                             }} onClick={(e)=>{
                                 onRegister(e);
-                            }} >Register</button>
+                            }} disabled={isOtpSent} >Register</button>
                             </div>
                         </form>
                         <form>

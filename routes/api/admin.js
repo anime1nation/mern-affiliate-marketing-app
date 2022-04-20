@@ -14,7 +14,7 @@ const adminAuth = require('../../middleware/adminAuth');
 const config = require('config');
 const mongoose = require('mongoose');
 const Grivances = require('../../models/Grivances');
-
+const moment = require('moment-timezone');
 router.get('/admin-list',  async (req, res) => {
     try {
         const admin = await Admin.find();
@@ -308,15 +308,15 @@ router.get('/kyc-request', async (req,res)=>{
                 package:user.package,
                 username:user.username,
                 referId:user.referId,
-                enrollDate :user.enrolledDate,
+                enrollDate :moment(user.enrolledDate).tz('Asia/Kolkata').format('YYYY-MM-DD'),
             }
         });
     
         res.status(200).json(KYCUsers);
 
     }catch(err){
-        console.eroor(err.message);
-        res.status().send('Server Error');
+        console.log(err.message);
+        res.status(500).send('Server Error');
     }
 
 } )
@@ -780,7 +780,7 @@ router.delete('/delete-testimonial/:id',async(req,res)=>{
         if(!testimonial){
             return res.status(400).send({errors:[{msg:'Testimonial not found'}]});
         }
-        await testimonial.remove();
+        await testimonial.deleteOne();
         res.status(200).json({msg:'Testimonial deleted successfully'});
     }catch(err){
         console.log(err.message);
@@ -846,6 +846,7 @@ router.post('/kyc-decline/:id', async (req,res)=>{
         user.isKYCApproved = false;
         user.isKYCDeclined = true;
         user.KYCDeclineReason = req.body.reason;
+	user.isKYCSubmitted = false;
         //delete aadhar pan and images
         user.aadhar='';
         user.pan='';
@@ -910,6 +911,12 @@ router.post('/reject-wallet/:id', async (req,res)=>{
             return res.status(400).send({errors:[{msg:'User not found'}]});
         }
         user.isWalletDeclined = true;
+        user.isWalletPaid = false;
+        //remove wallet object from user
+        user.wallet = {};
+
+
+
         await user.save();
         res.json({msg:'Wallet request rejected'});
     }catch(err){
@@ -968,10 +975,12 @@ router.delete('/delete-notice/:id', async(req,res)=>{
     
      try{
         const id = req.params.id;
-        const notice =  Notice.findByIdAndRemove(id)
+        
+        const notice =  Notice.findById(id)
         if(!notice){
             return res.status(400).json({errors:[{msg:'Notice not found'}]});
         }
+        await notice.deleteOne();
         res.json({msg:'Notice deleted successfully'});
      }catch(err){
          return res.status(500).json({errors:[{msg:'Server Error'}]})

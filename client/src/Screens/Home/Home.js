@@ -24,6 +24,7 @@ import { loadUser } from '../../action/auth';
 import {action as toggleMenu} from 'redux-burger-menu';
 import { store } from '../../store';
 import Notice from './Notice';
+import moment from 'moment';
  const Home = ({
     loadUser,
     auth:{
@@ -32,7 +33,6 @@ import Notice from './Notice';
     },
     isOpen
  }) => {
-
 
 
      const handleToggle = () => {
@@ -109,7 +109,7 @@ import Notice from './Notice';
                       </div>   
                     <div className='col-sm-12 text-right'>
                         <img src={tagline} alt="tagline" className="img-fluid"/>
-                        <Link to='/wallet'>
+                        <Link to='/login'>
                         <button className='btn btn-rounded btn-lg mt-3 text-light' style={{
                             backgroundColor:'#F56812',
                             borderRadius:"25px",
@@ -195,14 +195,16 @@ import Notice from './Notice';
 
             <div className='col-sm-3 col-xs-12 text-center mb-3'>
                 <button className='btn btn-rounded btn-lg text-light btnSilverPack' onClick={e=>{
-                    navigate('/wallet')
+                    navigate('/login')
                 }}> Enroll Now </button>
             </div>
         </div>
 
         <div className='row'>
         <div className='col-sm-3 col-xs-12 text-center'>
-                <button className='btn btn-rounded btn-lg  text-light btnGoldPack' > Enroll Now </button>
+                <button className='btn btn-rounded btn-lg  text-light btnGoldPack' onClick={e=>{
+                    navigate('/login')
+                }} > Enroll Now </button>
             </div>
             <div className='col-sm-9 col-xs-12'>
                 <img src={goldpackage} alt="logo" className='img-fluid' />

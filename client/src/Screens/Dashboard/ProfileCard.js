@@ -1,9 +1,41 @@
-import PropTypes from 'prop-types'
-import React from 'react'
+import React,{useEffect,useState,useRef} from 'react'
 import { connect } from 'react-redux'
 import avatar from '../../assets/image/avatar.png';
 import './profileCard.css';
- const ProfileCard = ({username,userid,todayIncome,profileImg}) => {
+import axios from 'axios';
+ const ProfileCard = ({username,userid,profileImg}) => {
+    const [todayIncome,setTodayIncome]=useState('');
+
+    const getTodayEarning = async () =>{
+        try{
+            const res = await axios.get('/api/user/today-earning');
+           
+            
+            setTodayIncome(res.data.todayEarning);
+
+             
+
+        }catch(err){
+            console.log(err.message);
+            
+        }
+    }
+
+
+    let isMounted = useRef(false);
+
+    useEffect (() => {
+        isMounted =true;
+        if(isMounted){
+            getTodayEarning();
+        }
+        return () => {
+            isMounted=false;
+        }
+    }, []);
+                
+
+
   return (
     <div className='col-md-3'>
         <div className='row' style={{

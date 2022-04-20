@@ -1,27 +1,34 @@
 import React,{Fragment, useEffect} from 'react';
-import PropTypes from 'prop-types';
 import './login.css';
 import Switch from 'react-switch';
 import SignUp from './SignUp';
 import bg from '../../assets/image/bg.jpg';
 import { connect } from 'react-redux';
 import Alerts from '../../Components/Alerts';
-import {signIn,loadUser} from '../../action/auth';
+import {loadUser,signIn} from '../../action/auth';
 import { setAlert } from '../../action/alert';
 import { useNavigate } from 'react-router-dom';
-
+import '../Wallet/userNavbar.css';
 import {action as toggleMenu} from 'redux-burger-menu';
+import  icon from '../../assets/image/icon.png';
+import { Link} from 'react-router-dom';
+import { faBars,faWallet } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 const Login = ({
     signIn,
     user,
     setAlert,
     toggleMenu,
-    isAuthenticated
+    isAuthenticated,
+    loadUser
 }) => {
 
     const navigate = useNavigate();
 
     const [checked, setChecked] = React.useState(false);
+
+    const [loginLoading, setLoginLoading] = React.useState(false);
     const handleChange = checked => {
         setChecked(checked);
     };
@@ -39,26 +46,27 @@ const Login = ({
 
 
         const onSubmit = async (e) =>{
+            e.preventDefault();
+            setLoginLoading(true);
             
             if(username==="" || password===""){
                 setAlert('Please fill all the fields','danger');
             }else{
                try{
                 signIn({username,password});
-                
-                setTimeout(() => {
-                    if(isAuthenticated && user!==null){
-                        navigate('/home')
-                    }},500);
+                loadUser();
                 
                }catch(err){
-                console.log(err.message);
+                   
+                setLoginLoading(false);
+                console.log(loginLoading)
                 const errors = err.response.data.errors;
                 if(errors){
                     errors.forEach(error => setAlert(error.msg,'danger'));
                 }
                 
-                
+               
+                            
                }
             }
         }
@@ -66,16 +74,21 @@ const Login = ({
 
         useEffect(() => {
             toggleMenu(false,'user');
-    
-          
+      
         }, [])
+
+        useEffect(()=>{
+            setLoginLoading(false);
+            if(isAuthenticated){
+                
+                navigate('/home');
+            }
+        },[isAuthenticated,loginLoading])
         
-
-        
-
-
-
   return (
+    <Fragment>
+  
+
     <div className="container-fluid login-page" style={{
         width: '100%',
         height: '100vh',
@@ -84,6 +97,24 @@ const Login = ({
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
     }}>
+
+
+    <div className='row'>
+    <div className="col-3">
+        <Link to='/' className="text-light listItem"> <img src={icon} alt="logo" style={{
+            height: '5rem',
+            width: '5rem'
+        }} /></Link> 
+    </div>
+    <div className="col-9 text-right text-dark">
+        <ul className="leftNav mt-3">
+           
+            <li> <Link to='/wallet' className="text-light listItem"><FontAwesomeIcon icon={faWallet} /></Link> </li>
+            
+        </ul>
+    </div>
+    </div>
+
         <div className="row" >
             <div className='col-sm-12'> 
                
@@ -169,17 +200,29 @@ const Login = ({
                             </div>
                             <div className='text-center mt-5'>
                             
-                            <button  className='waves-effect waves-light btn deep-orange daken-1'  style={{
-                                background: '#F56812 0% 0% no-repeat padding-box',
-                                borderRadius: '43px',
-                                width: '200px',
-                                height: '45px',
-                                opacity: '1'
-                            }} 
-                            onClick={e=>{
-                                onSubmit(e)
-                            }}
-                            >Login</button>
+                            {
+                                loginLoading ? <button  className='waves-effect waves-light btn deep-orange daken-1'  style={{
+                                    background: '#F56812 0% 0% no-repeat padding-box',
+                                    borderRadius: '43px',
+                                    width: '200px',
+                                    height: '45px',
+                                    opacity: '1'
+                                }} 
+                                
+                                > <i className='spinner-border text-light text-center' role='status'></i> </button>:
+                                <button  className='waves-effect waves-light btn deep-orange daken-1'  style={{
+                                    background: '#F56812 0% 0% no-repeat padding-box',
+                                    borderRadius: '43px',
+                                    width: '200px',
+                                    height: '45px',
+                                    opacity: '1'
+                                }} 
+                                onClick={e=>{
+                                    onSubmit(e)
+                                }}
+                                >Login</button>
+                                
+                            }
                              
                             </div>
                             <div className='text-center mt-2'>
@@ -204,7 +247,8 @@ const Login = ({
                  </div>
               </div>
         </div>
-    </div>                        
+    </div>   
+    </Fragment>                     
   );
 };
 
@@ -218,4 +262,4 @@ const mapStateToProps = state => ({
     
 });
 
-export default connect(mapStateToProps,{signIn,setAlert,toggleMenu})(Login);
+export default connect(mapStateToProps,{signIn,setAlert,loadUser,toggleMenu})(Login);

@@ -123,6 +123,7 @@ const BasicDetailCard = ({
                 fetchBasicDetails();
                 setIsdisabled(true);
                 alert('Basic Details Updated Successfully');
+		window.location.reload();
         }catch(err){
             console.log(err.message);
         }

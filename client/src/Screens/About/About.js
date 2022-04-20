@@ -24,7 +24,7 @@ const About = ({
            backgroundColor:'#F56812'
 
        }}>
-       <div className='col-sm-12 mt-3 pc-icons'>
+       <div className='col-sm-12 mt-3'>
                     <ul className='d-flex flex-row-reverse '>
                     <li style={{listStyle:'none'}} className='mr-2'>
                             <a onClick={

@@ -34,7 +34,8 @@ const handleLogout = () => {
 return(
 
     <Menu right isOpen={isOpen} onOpen={onOpenHandle} onClose={onCloseHandler}  customBurgerIcon={false}>
-        {
+        <p><Link to="/" className="menu-item">Home</Link></p> 
+	{
             auth.isAuthenticated ?
             <div>
            <p><Link to="/dashboard" className="menu-item"> Dashboard </Link></p> 

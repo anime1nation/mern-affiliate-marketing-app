@@ -28,23 +28,8 @@ const Dashboard = ({
 
     const [userInfo,setUser]=React.useState({});
     const [isLoading,setIsLoading]=React.useState(true);
-    const [todayIncome,setTodayIncome]=React.useState(0);
-
-    const getTodayEarning = async () =>{
-        try{
-            const res = await axios.get('/api/user/today-earning');
-           
-            
-            setTodayIncome(res.data);
-           
-            setIsLoading(false);
-            
-
-        }catch(err){
-            setIsLoading(false);
-            
-        }
-    }
+    
+    
 
 
     const load = async () =>{
@@ -70,7 +55,6 @@ const Dashboard = ({
             loadUser();
             
             load();
-            getTodayEarning();
             if(!auth.isAuthenticated){
                 navigate('/')
             }
@@ -113,7 +97,7 @@ const Dashboard = ({
            </div>   
               
             <div className='row mt-5 px-5'>
-                    <ProfileCard username={userInfo.name} profileImg={userInfo.profileImg} userid={userInfo.referId} todayIncome={todayIncome} />
+                    <ProfileCard username={userInfo.name} profileImg={userInfo.profileImg} userid={userInfo.referId}  />
                     <DetailCardGroup user={userInfo}/>
                     <ScheduleCard />
             </div>  

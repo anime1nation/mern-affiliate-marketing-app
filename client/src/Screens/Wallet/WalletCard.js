@@ -113,14 +113,30 @@ const WalletCard = ({
             });
             loadUser();
         }catch(err){
-            setAlert('Something Went Wrong');
+            const errors = err.response.data.errors;
+            if(errors){
+                errors.forEach(error => setAlert(error.msg,'danger'));
+            }
+            setFormData({
+                amount:'', upiId:'', upi:'', country:'', state:'', city:'', paySlip:'', remarks:''
+            });
         }
     }
 
 
     return(
         <Fragment>
-
+    <div className="container">
+                <div className="row">
+                    <div className="col-sm-12 text-right">
+                         
+                          <span  onClick={()=>loadUser()}>  <i className="fa-solid fa-2x fa-refresh " style={{
+                              cursor:'pointer'
+                              
+                          }} ></i>    </span>   
+                    </div>
+                </div>
+            </div>            
            { !user.isEnrolled ?
            ( <Fragment>
             
@@ -157,17 +173,18 @@ const WalletCard = ({
                             </div>
 
                             <div className="form-group">
-                                <label>UPI</label>
+                                <label>TRANSACTION REFERENCE ID</label>
                                 <input type="text" className="form-control" id="upi" aria-describedby="upi" value={upiId} name="upiId" onChange={(e)=>{
                                     onChangeHandler(e)
-                                }} placeholder="Enter UPI ID" />
+                                }} placeholder="Enter REFERENCE ID" />
                                 <select className="form-control" id="upi" name="upi" value={upi} onChange={(e)=>{
                                     onChangeHandler(e)
                                 }}>
-                                    <option>Select UPI</option>
+                                    <option>Select PAYMENT GATEWAY</option>
                                     <option value="phonepe">Phonepe</option>
-                                    <option value="paytem">Paytm</option>
+                                    <option value="paytm">Paytm</option>
                                     <option value="googlePay">Google Pay</option>
+		                    <option value="other">OTHER</option>
                                 </select>
                             </div>
 

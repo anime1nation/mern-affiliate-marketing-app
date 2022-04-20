@@ -41,7 +41,16 @@ const  WalletRequest = ({loadWalletRequest}) => {
         <div className='row'>
             <AdminNavbar />
             <Alerts />
-         </div>  
+         </div> 
+	  <div className='row'>
+        <div className='col-sm-12 text-right'><i className='fa-solid fa-refresh text-right fa-2x' style={{
+                        cursor:'pointer'
+                    }} onClick={
+                       ()=>{
+                        fetchRequest();
+                    }}></i>
+        </div>
+        </div>
 {
     isLoading ? <div className='text-center'>
         <img src={loader} alt="loader" className="loader" />
@@ -64,7 +73,7 @@ const  WalletRequest = ({loadWalletRequest}) => {
                                   <p className='txt-wallet-card' >Name :{request.name}</p >
                                   <p className='txt-wallet-card' > Mobile No.: {request.mobile}</p >
                                   <p className='txt-wallet-card' >Requested Amount : {request.wallet.amount}</p >
-                                  <p className='txt-wallet-card' > UPI Id: {request.wallet.upiId}({request.wallet.upi})</p >
+                                  <p className='txt-wallet-card' > REFERENCE Id: {request.wallet.upiId}({request.wallet.upi})</p >
                                   
                                   <p className='txt-wallet-card' >City : {request.wallet.city}</p >
                                   <p className='txt-wallet-card' >State :{request.wallet.state}</p >

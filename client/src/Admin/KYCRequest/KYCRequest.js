@@ -56,7 +56,15 @@ const KYCRequest = ({
         </div>
 
         <div className='row'>
-            <div className='col-md-12'>
+            <div className='col-md-12 text-right'>
+	  <div className='text-right'><i className='fa-solid fa-refresh text-right fa-2x' style={{
+                        cursor:'pointer'
+                    }} onClick={
+                       ()=>{
+                        load();
+
+                    }}>
+                    </i></div>
                 {
                     users.length > 0 ? 
                 <SimpleBar style={{ maxHeight: '100vh' }}>

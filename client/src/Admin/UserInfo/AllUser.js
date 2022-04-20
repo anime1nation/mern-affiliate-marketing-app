@@ -160,7 +160,7 @@ export const AllUser = () => {
                               <th>Usermame</th>
                               <th>Refer Id</th>
                               <th>Package</th>
-                              <th>Sponcer Id</th>
+                              <th>Sponsor Id</th>
                               <th>Enrollment Date</th>
                               <th></th>
                              </tr>

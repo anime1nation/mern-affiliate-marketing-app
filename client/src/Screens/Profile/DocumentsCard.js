@@ -107,7 +107,7 @@ const DocumentsCard = ({
             
             
                 if(res.data!==null){
-                    if(res.data.aadharFrontImg && res.data.aadharBackImg && res.data.panImg && res.data.passbookImg){
+                    if(res.data.aadharFrontImg && res.data.aadharFrontImg!=='' && res.data.aadharBackImg && res.data.aadharBackImg!=='' && res.data.panImg && res.data.panImg!=='' && res.data.passbookImg  && res.data.passbookImg!==''){
                         setformData({
                             aadharFrontImg:res.data.aadharFrontImg,
                             aadharBackImg:res.data.aadharBackImg,
@@ -116,9 +116,10 @@ const DocumentsCard = ({
                         });
                         setIsDocsUploaded(true);
                     }
-                    if(res.data.aadhar!=='' && res.data.pan!==null){
+                    if(res.data.aadhar && res.data.aadhar!=="" && res.data.pan && res.data.pan!==""){
                         setIsDocSubmitted(true);
                     }
+                    console.log(isDocSubmitted);
                 }
             
 
@@ -299,7 +300,7 @@ const DocumentsCard = ({
                 <div className='row'>
                     <div className='col-sm-12 text-center'>
                         {
-                            !isDocSubmitted ? <strong className='text-danger'>Please submit aadhar number and PAN first.</strong> :aadharFrontImg==='' || aadharBackImg==='' || panImg ==='' || passbookImg === '' ? <strong className='text-danger'>Note : Please upload only image file</strong> :<strong className='text-success'>You have uploaded the KYC documents</strong>
+                            isDocSubmitted ?  aadharFrontImg==='' || aadharBackImg==='' || panImg ==='' || passbookImg === '' ? <strong className='text-danger'>Note : Please upload only image file</strong> :<strong className='text-success'>You have uploaded the KYC documents</strong> : <strong className='text-danger'>Please submit aadhar number and PAN first.</strong>
                         }
                     </div>   
                      

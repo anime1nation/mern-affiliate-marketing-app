@@ -16,7 +16,7 @@ const Classes = ({setAlert}) => {
     const silverpackage  = () =>{
         try{
             //check if string contains zoom.com or meet.google
-            if(silverLink.includes('zoom.com') || silverLink.includes('meet.google')){
+            if(silverLink.includes('zoom.us') || silverLink.includes('meet.google')){
                 
             const config = {
                 headers:{
@@ -45,7 +45,7 @@ const Classes = ({setAlert}) => {
     const goldpackage  = () =>{
         try{
             //check if string contains zoom.com or meet.google
-            if(goldLink.includes('zoom.com') || goldLink.includes('meet.google')){
+            if(goldLink.includes('zoom.us') || goldLink.includes('meet.google')){
             
             const config = {
                 headers:{

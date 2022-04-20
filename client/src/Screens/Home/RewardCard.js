@@ -14,7 +14,12 @@ const RewardCard = () => {
             backgroundColor: '#F56812',
             borderRadius: '10px'
         }}>
-            <div className='row mx-auto reward-img-box'>
+            <div className='row mx-auto'>
+                <div className='col-sm-12 text-center'>
+                <h5 className='text-light'> Get a chance to win exciting gift hampers <sup>*</sup> </h5>
+                </div>
+            </div>    
+            <div className='row text-center  reward-img-box'>
                 <div className='col-sm-4'>
                     <img src={r1} alt="r1" className="img-fluid reward-img"/> 
                 </div>
@@ -28,7 +33,7 @@ const RewardCard = () => {
                 </div>
             
             </div>
-            <div className='row mx-auto pb-4'>
+            <div className='row text-center pb-4'>
                 <div className='col-sm-4'>
                     <img src={r4} alt="r1" className="img-fluid reward-img"/> 
                 </div>
@@ -43,6 +48,13 @@ const RewardCard = () => {
             
             </div>
 
+
+            <div className='row'>
+                <div className='col-sm-12 text-center'>
+                    
+                    <h6>* T&C applid : Valid for first month of joining</h6>
+                </div>    
+            </div>
 
 
         </div>

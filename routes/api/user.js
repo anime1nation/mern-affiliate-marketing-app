@@ -10,7 +10,7 @@ const userAuth = require('../../middleware/userAuth');
 const User = require('../../models/User');
 const Notice = require('../../models/Notice');
 const Grivances = require('../../models/Grivances');
-const moment = require('moment');
+const moment = require('moment-timezone');
 const mongoose = require('mongoose');
 const unirest = require('unirest');
 
@@ -207,6 +207,16 @@ router.post('/wallet-request',userAuth,async(req,res)=>{
         if(user.isWalletPaid){
             return res.status(500).json({errors:[{msg: 'Wallet already paid'}]});
         }
+
+        if(user.isWalletDeclined){
+            user.isWalletDeclined=false;
+        }
+	    const upiIdUser = await User.findOne({'wallet.upiId':upiId});
+        if(upiIdUser){
+            return res.status(500).json({errors:[{msg: 'Transaction Refrence Id alredy exist'}]});
+
+        }
+
         //generate random 5 letter string
         const package =  amount ==  '999' ? 'silver' : 'gold';
         const paymentId = Math.random().toString(36).substring(2, 7);
@@ -357,7 +367,9 @@ router.post('/enroll',userAuth,async(req,res)=>{
             uplinkId,
             isEnrolled:true,
             username,
-            enrolledDate:moment().format('YYYY-MM-DD'),
+            enrolledDate:moment.tz('Asia/Kolkata').format('YYYY-MM-DD'),
+      
+  
 
         }
 
@@ -381,7 +393,7 @@ router.post('/enroll',userAuth,async(req,res)=>{
       
 
         //find today date in uplink dayEarning
-        const today = moment().format('YYYY-MM-DD');
+        const today = moment.tz('Asia/Kolkata').format('YYYY-MM-DD')
         const dayIndex = firstuplink.dayEarning.findIndex(day => day.earningDate === today);
         console.log(dayIndex);
         if(dayIndex===-1){
@@ -494,7 +506,7 @@ router.get('/today-earning',userAuth,async(req,res)=>{
         if(!user){
             return res.status(500).json({errors:[{msg: 'User not found'}]});
         }
-        const today = moment().format('YYYY-MM-DD');
+        const today = moment.tz('Asia/Kolkata').format('YYYY-MM-DD')
         console.log('today is'+today)
         
         //find sum of today earnings
@@ -506,7 +518,7 @@ router.get('/today-earning',userAuth,async(req,res)=>{
 
         const data = todayEarning.firstGenDayEarning + todayEarning.secondGenDayEarning + todayEarning.thirdGenDayEarning;
 
-        return res.status(200).json(data);
+        return res.status(200).json({todayEarning:data});
     }catch(err){
         console.error(err.message);
         res.status(500).send('Server Error');
@@ -594,8 +606,8 @@ router.post('/update-kyc-documents',userAuth,async(req,res)=>{
         if(!user.isWalletPaid){
             return res.status(400).json({errors:[{msg: 'Wallet not paid'}]});
         }
-        if(user.isKYCSubmitted){
-            return res.status(400).json({errors:[{msg: 'You have alredy submitted documents'}]});
+        if(user.isKYCDeclined){
+                user.isKYCDeclined=false;
         }
         if(user.aadharFrontImg && user.aadharBackImg && user.panImg && user.passbookImg){
             return res.status(400).json({errors:[{msg: 'You have alredy submitted documents'}]});
